@@ -1,10 +1,14 @@
 import React, { useState } from "react";
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+import Fab from '@material-ui/core/Fab';
+import Zoom from '@material-ui/core/Zoom';
 
 function CreateArea(props) {
     const [note, setNote] = useState({
         title: "",
         content: ""
     });
+    const [extended, setExtended] = useState(false);
 
     function handleInput(event) {
         const { name, value } = event.target;
@@ -25,12 +29,22 @@ function CreateArea(props) {
         event.preventDefault();
     }
 
+    function handleClick() {
+        setExtended(true);
+    }
+
     return (
         <div>
-            <form>
-                <input onChange={handleInput} value={note.title} name="title" placeholder="Title" />
-                <textarea onChange={handleInput} name="content" value={note.content} placeholder="Take a note..." rows="3" />
-                <buttone onClick={submitNote}>Add</buttone>
+            <form className="create-note">
+                {extended && <input onChange={handleInput} value={note.title} name="title" placeholder="Title" />}
+                <textarea onClick={handleClick} onChange={handleInput}
+                    name="content"
+                    value={note.content}
+                    placeholder="Take a note..."
+                    rows={extended ? "3": "1"} />
+                <Zoom in={extended}>
+                    <Fab onClick={submitNote}><AddCircleIcon /></Fab>
+                </Zoom>
             </form>
         </div>
     );
